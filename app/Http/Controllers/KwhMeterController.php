@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreKwhMeterRequest;
-use App\Http\Requests\UpdateKwhMeterRequest;
+
 use App\Models\KwhMeter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,11 +17,18 @@ class KwhMeterController extends Controller
     public function index(Request $request)
     {
         try {
-            if ($request->keyword == null || $request->keyword == "null") {
-
+            if ($request->search == 'dropdown') {
+                return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif','pelanggan', 'hasPic', 'hasDaya','hasBiayaAdmin')->get();
+            }
+            else if($request->search === 'prabayar'){
+                return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif','pelanggan', 'hasPic', 'hasDaya','hasBiayaAdmin')->whereDoesntHave('hasPascabayar')->get();
+            }
+            else if($request->search === 'pascabayar'){
+                return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif','pelanggan', 'hasPic', 'hasDaya','hasBiayaAdmin')->whereDoesntHave('hasPrabayar')->get();
+            }
+            else if($request->keyword == null || $request->keyword == '') {
                 return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif','pelanggan', 'hasPic', 'hasDaya','hasBiayaAdmin')->paginate(10);
             }else {
-
                 return KwhMeter::search($request->keyword)->with('hasWitel', 'hasWitel.regional', 'hasTarif','pelanggan', 'hasPic', 'hasDaya','hasBiayaAdmin')->paginate(10);
             }
 
@@ -96,9 +102,10 @@ class KwhMeterController extends Controller
      * @param  \App\Models\KwhMeter  $kwhMeter
      * @return \Illuminate\Http\Response
      */
-    public function show(KwhMeter $kwhMeter)
+    public function show(KwhMeter $meteran)
     {
-        //
+        $result = $meteran::with((['hasWitel', 'hasWitel.regional', 'hasTarif','pelanggan', 'hasPic', 'hasDaya','hasBiayaAdmin']))->find($meteran->id);
+        return response()->json( $result, 200);
     }
 
     /**

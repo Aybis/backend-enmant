@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('pelanggan', PelangganController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::resource('regional', RegionalController::class)->only(['index', 'store', 'update', 'destroy']);
-Route::resource('meteran', KwhMeterController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::resource('meteran', KwhMeterController::class)->only(['index', 'store', 'update', 'destroy', 'show']);
 Route::resource('witel', WitelController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::resource('tarif', TarifController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::resource('daya', DayaController::class)->only(['index', 'store', 'update', 'destroy']);

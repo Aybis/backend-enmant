@@ -58,12 +58,12 @@ class KwhMeter extends Model
 
     public function hasPrabayar()
     {
-        return $this->belongsTo(Prabayar::class, 'id');
+        return $this->hasMany(Prabayar::class, 'id_no_kwh_meter', 'id');
     }
 
     public function hasPascabayar() 
     {
-        return $this->belongsTo(Pascabayar::class, 'id');
+        return $this->hasMany(Pascabayar::class, 'id_no_kwh_meter', 'id');
     }
 
     
