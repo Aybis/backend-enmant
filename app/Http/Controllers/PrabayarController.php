@@ -17,13 +17,14 @@ class PrabayarController extends Controller
     {
 
         try {
-            if ($request->keyword == null || $request->keyword == "null") 
-            {
-                return Prabayar::with('kwh_meters','kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif','kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya','kwh_meters.hasBiayaAdmin')->paginate(10);
+            if ($request->keyword == null || $request->keyword == "null"){
+                $query =  Prabayar::with('kwh_meters','kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif','kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya','kwh_meters.hasBiayaAdmin');
             } else {
-        
-                return Prabayar::search($request->keyword)->with('kwh_meters','kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif','kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya','kwh_meters.hasBiayaAdmin')->paginate(10);
+                $query = Prabayar::search($request->keyword)->with('kwh_meters','kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif','kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya','kwh_meters.hasBiayaAdmin');
             }
+
+            return $query->whereMonth('created_at', $request->month)->whereYear('created_at', $request->year)->orderByDesc('created_at') ->paginate(10);
+            
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }

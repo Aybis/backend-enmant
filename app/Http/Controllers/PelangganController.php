@@ -20,7 +20,7 @@ class PelangganController extends Controller
         if($request->search !== null) {
             $pelanggan = Pelanggan::where('nama_pelanggan', 'LIKE', '%'.$request->searching.'%')->get();
         }else {
-            $pelanggan = Pelanggan::with('kwhMeter')->where('nama_pelanggan', 'LIKE', '%'.$request->keyword.'%')->paginate(10);
+            $pelanggan = Pelanggan::with('kwhMeter', 'prabayars','pascabayars')->where('nama_pelanggan', 'LIKE', '%'.$request->keyword.'%')->paginate(10);
         }
         
         return response()->json($pelanggan, 200);

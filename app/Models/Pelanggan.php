@@ -19,4 +19,14 @@ class Pelanggan extends Model
     {
         return $this->hasMany(KwhMeter::class, 'id_tbl_pelanggan', 'id');
     }
+
+    public function prabayars() 
+    {
+        return $this->hasManyThrough(Prabayar::class, KwhMeter::class, 'id_tbl_pelanggan', 'id_no_kwh_meter', 'id');
+    }
+
+    public function pascabayars()
+    {
+        return $this->hasManyThrough(Pascabayar::class, KwhMeter::class, 'id_tbl_pelanggan', 'id_no_kwh_meter', 'id');
+    }
 }
