@@ -17,24 +17,17 @@ class PelangganController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->search !== null) {
-            $pelanggan = Pelanggan::where('nama_pelanggan', 'LIKE', '%'.$request->searching.'%')->get();
-        }else {
-            $pelanggan = Pelanggan::with('kwhMeter', 'prabayars','pascabayars')->where('nama_pelanggan', 'LIKE', '%'.$request->keyword.'%')->paginate(10);
+        if ($request->search !== null) {
+            $pelanggan = Pelanggan::where('nama_pelanggan', 'LIKE', '%' . $request->searching . '%')->get();
+        } else {
+            $pelanggan = Pelanggan::with('kwhMeter', 'prabayars', 'pascabayars')
+                ->withCount(['kwhMeter', 'prabayars', 'pascabayars'])
+                ->where('nama_pelanggan', 'LIKE', '%' . $request->keyword . '%')->paginate(10);
         }
-        
+
         return response()->json($pelanggan, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -53,12 +46,12 @@ class PelangganController extends Controller
             'unique' => ':Attribute sudah pernah dibuat',
             'required' => ':Attribute tidak boleh kosong',
         ];
-        
-        $this->validate($request,$validate, $messages);
+
+        $this->validate($request, $validate, $messages);
 
         try {
             DB::transaction(
-                function() use ($request) {
+                function () use ($request) {
                     $pelanggan = new Pelanggan();
                     $pelanggan->nama_pelanggan = $request->nama_pelanggan;
                     $pelanggan->is_active = 1;
@@ -66,35 +59,11 @@ class PelangganController extends Controller
                 }
             );
             return response()->json(['message' => "Pelanggan Berhasil Ditambahkan"], 201);
-
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()],400);
+            return response()->json(['message' => $e->getMessage()], 400);
         }
-
-        
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Pelanggan  $pelanggan
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Pelanggan $pelanggan)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Pelanggan  $pelanggan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pelanggan $pelanggan)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -108,26 +77,25 @@ class PelangganController extends Controller
 
         $id = $pelanggan == null ? '' : $pelanggan->id;
         $validate = [
-            'nama_pelanggan' => 'required|unique:pelanggans,nama_pelanggan,'.$id,
+            'nama_pelanggan' => 'required|unique:pelanggans,nama_pelanggan,' . $id,
         ];
 
         $messages = [
             'unique' => ':Attribute sudah pernah dibuat',
             'required' => ':Attribute tidak boleh kosong',
         ];
-        
-        $this->validate($request,$validate, $messages);
+
+        $this->validate($request, $validate, $messages);
 
         try {
             $pelanggan->nama_pelanggan = $request->nama_pelanggan;
             $pelanggan->update();
             return response()->json(['message' => "Pelanggan Berhasil Diperbaharui"], 200);
-
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()],400);
+            return response()->json(['message' => $e->getMessage()], 400);
         }
-
     }
+
 
     /**
      * Remove the specified resource from storage.

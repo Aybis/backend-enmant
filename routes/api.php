@@ -24,10 +24,15 @@ use App\Http\Controllers\WitelController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+// });
 
+Route::group([
+    'prefix' => 'prabayar',
+], function () {
+    Route::GET('export', [PrabayarController::class, 'export']);
+    Route::POST('import', [PrabayarController::class, 'import']);
+});
 
 Route::resource('pelanggan', PelangganController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::resource('regional', RegionalController::class)->only(['index', 'store', 'update', 'destroy']);

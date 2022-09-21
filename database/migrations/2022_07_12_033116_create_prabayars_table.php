@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->integer('id_no_kwh_meter');
             $table->bigInteger('nominal_pembelian_token');
-            $table->bigInteger('token');
-            $table->text('keterangan'); 
+            $table->string('token');
+            $table->text('keterangan')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
