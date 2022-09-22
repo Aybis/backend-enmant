@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Models\User;
 use App\Models\Prabayar;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;

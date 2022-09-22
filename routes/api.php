@@ -34,6 +34,13 @@ Route::group([
     Route::POST('import', [PrabayarController::class, 'import']);
 });
 
+Route::group([
+    'prefix' => 'pascabayar',
+], function () {
+    Route::GET('export', [PascabayarController::class, 'export']);
+    Route::POST('import', [PascabayarController::class, 'import']);
+});
+
 Route::resource('pelanggan', PelangganController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::resource('regional', RegionalController::class)->only(['index', 'store', 'update', 'destroy']);
 Route::resource('meteran', KwhMeterController::class)->only(['index', 'store', 'update', 'destroy', 'show']);

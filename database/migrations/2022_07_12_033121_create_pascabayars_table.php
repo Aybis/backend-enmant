@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('id_no_kwh_meter');
             $table->bigInteger('meter_awal');
             $table->bigInteger('meter_akhir');
-            $table->bigInteger('selisih');
+            $table->bigInteger('selisih')->nullable();
             $table->bigInteger('tagihan');
             $table->timestamps();
             $table->softDeletes();
