@@ -15,11 +15,16 @@ return new class extends Migration
     {
         Schema::create('pascabayars', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_no_kwh_meter');
+            $table->unsignedBigInteger('id_no_kwh_meter');
+            $table->foreign('id_no_kwh_meter')->references('id')->on('kwh_meters')->onDelete('cascade');
             $table->bigInteger('meter_awal');
             $table->bigInteger('meter_akhir');
             $table->bigInteger('selisih');
             $table->bigInteger('tagihan');
+            $table->bigInteger('denda')->nullable();
+            $table->string('keterangan')->nullable();
+            $table->string('status')->nullable();
+            $table->date('tanggal_transaksi')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

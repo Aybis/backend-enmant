@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('alias');
-            $table->integer('id_regional');
+            $table->unsignedBigInteger('id_regional');
+            $table->foreign('id_regional')->references('id')->on('regionals')->onDelete('cascade');
             $table->boolean('is_active')->default(1);
             $table->timestamps();
             $table->softDeletes();

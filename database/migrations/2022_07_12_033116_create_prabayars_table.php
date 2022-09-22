@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('prabayars', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_no_kwh_meter');
+            $table->unsignedBigInteger('id_no_kwh_meter');
+            $table->foreign('id_no_kwh_meter')->references('id')->on('kwh_meters')->onDelete('cascade');
             $table->bigInteger('nominal_pembelian_token');
             $table->bigInteger('token');
-            $table->text('keterangan'); 
+            $table->text('keterangan')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
