@@ -66,6 +66,7 @@ class PrabayarController extends Controller
                     $kwh->nominal_pembelian_token = $request->nominal_pembelian_token;
                     $kwh->token = $request->token;
                     $kwh->keterangan = $request->keterangan;
+                    $kwh->biaya_admin = $request->biaya_admin;
                     $kwh->save();
                 }
             );
@@ -103,6 +104,7 @@ class PrabayarController extends Controller
             $prabayar->nominal_pembelian_token = $request->nominal_pembelian_token;
             $prabayar->token = $request->token;
             $prabayar->keterangan = $request->keterangan;
+            $prabayar->biaya_admin = $request->biaya_admin;
             $prabayar->update();
             return response()->json(['message' => "Prabayar Berhasil Diperbaharui"], 200);
         } catch (\Exception $e) {

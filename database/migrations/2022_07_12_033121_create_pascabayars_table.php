@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('keterangan')->nullable();
             $table->string('status')->nullable();
             $table->date('tanggal_transaksi')->nullable();
+            $table->bigInteger('biaya_admin')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

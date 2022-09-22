@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('id_witel');
             $table->integer('id_daya');
             $table->integer('id_pic');
-            $table->integer('id_biaya_admin');
+            $table->integer('id_biaya_admin')->nullable();
             $table->boolean('is_active')->default(1);
             $table->bigInteger('bongkar_rampung')->nullable();
             $table->integer('pasang_baru')->nullable();

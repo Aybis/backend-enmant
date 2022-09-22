@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('id_no_kwh_meter')->references('id')->on('kwh_meters')->onDelete('cascade');
             $table->bigInteger('nominal_pembelian_token');
             $table->string('token');
+            $table->bigInteger('biaya_admin')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
             $table->softDeletes();

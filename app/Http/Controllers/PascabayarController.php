@@ -66,6 +66,7 @@ class PascabayarController extends Controller
                     $pascabayar->meter_akhir = $request->meter_akhir;
                     $pascabayar->selisih = $request->selisih;
                     $pascabayar->tagihan = $request->tagihan;
+                    $pascabayar->biaya_admin = $request->biaya_admin;
                     $pascabayar->save();
                 }
             );
@@ -105,6 +106,7 @@ class PascabayarController extends Controller
             $pascabayar->meter_akhir = $request->meter_akhir;
             $pascabayar->selisih = $request->selisih;
             $pascabayar->tagihan = $request->tagihan;
+            $pascabayar->biaya_admin = $request->biaya_admin;
             $pascabayar->update();
             return response()->json(['message' => "Pascabayar Berhasil Diperbaharui"], 201);
         } catch (\Exception $e) {
