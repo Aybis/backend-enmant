@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportPascabayar;
 use App\Models\Pascabayar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ImportPrabayar;
+use App\Exports\ExportPrabayar;
+use App\Imports\ImportPascabayar;
 
 class PascabayarController extends Controller
 {
@@ -29,15 +34,6 @@ class PascabayarController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -79,27 +75,6 @@ class PascabayarController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Pascabayar  $pascabayar
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Pascabayar $pascabayar)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Pascabayar  $pascabayar
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pascabayar $pascabayar)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -160,5 +135,33 @@ class PascabayarController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
+    }
+
+
+    /**
+     * Import data excel 
+     *
+     */
+    public function import(Request $request)
+    {
+        try {
+            $file = $request->file('file');
+            Excel::import(new ImportPascabayar, $file, \Maatwebsite\Excel\Excel::XLSX);
+            return response()->json(['message' => "Success Upload data pascabayar"], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+
+    /**
+     * Export data excel 
+     *
+     */
+    public function export(Request $request)
+    {
+        $month = $request->month == null ? Carbon::now()->month : $request->month;
+        $year = $request->year == null ? Carbon::now()->year : $request->year;
+        return Excel::download(new ExportPascabayar($request, $year, $month),  $year . '-' . $month . '.xlsx');
     }
 }

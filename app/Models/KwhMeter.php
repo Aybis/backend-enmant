@@ -13,7 +13,7 @@ class KwhMeter extends Model
 
     protected $primaryKey = 'id';
     protected $table = 'kwh_meters';
-    
+
     protected $searchable = [
         'no_pelanggan',
         'no_kwh_meter',
@@ -31,14 +31,14 @@ class KwhMeter extends Model
         return $this->belongsTo(Witel::class, 'id');
     }
 
-    public function pelanggan() 
+    public function pelanggan()
     {
-        return $this->belongsTo(Pelanggan::class, 'id_tbl_pelanggan','id');
+        return $this->belongsTo(Pelanggan::class, 'id_tbl_pelanggan', 'id');
     }
 
     public function hasPic()
     {
-        return $this->belongsTo(PIC::class, 'id_pic','id');
+        return $this->belongsTo(PIC::class, 'id_pic', 'id');
     }
 
     public function hasTarif()
@@ -46,7 +46,7 @@ class KwhMeter extends Model
         return $this->belongsTo(Tarif::class, 'id_tarif', 'id');
     }
 
-    public function hasDaya() 
+    public function hasDaya()
     {
         return $this->belongsTo(Daya::class, 'id_daya', 'id');
     }
@@ -61,10 +61,8 @@ class KwhMeter extends Model
         return $this->hasMany(Prabayar::class, 'id_no_kwh_meter', 'id');
     }
 
-    public function hasPascabayar() 
+    public function hasPascabayar()
     {
         return $this->hasMany(Pascabayar::class, 'id_no_kwh_meter', 'id');
     }
-
-    
 }

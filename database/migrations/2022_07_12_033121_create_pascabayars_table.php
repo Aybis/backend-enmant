@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('id_no_kwh_meter')->references('id')->on('kwh_meters')->onDelete('cascade');
             $table->bigInteger('meter_awal');
             $table->bigInteger('meter_akhir');
-            $table->bigInteger('selisih');
+            $table->bigInteger('selisih')->nullable();
             $table->bigInteger('tagihan');
             $table->bigInteger('denda')->nullable();
             $table->string('keterangan')->nullable();

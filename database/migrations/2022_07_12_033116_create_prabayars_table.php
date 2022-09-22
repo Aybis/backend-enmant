@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_no_kwh_meter');
             $table->foreign('id_no_kwh_meter')->references('id')->on('kwh_meters')->onDelete('cascade');
             $table->bigInteger('nominal_pembelian_token');
-            $table->bigInteger('token');
+            $table->string('token');
             $table->text('keterangan')->nullable();
             $table->timestamps();
             $table->softDeletes();

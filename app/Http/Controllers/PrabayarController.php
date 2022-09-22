@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Prabayar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ImportPrabayar;
+use App\Exports\ExportPrabayar;
 
 class PrabayarController extends Controller
 {
@@ -17,28 +20,19 @@ class PrabayarController extends Controller
     {
 
         try {
-            if ($request->keyword == null || $request->keyword == "null"){
-                $query =  Prabayar::with('kwh_meters','kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif','kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya','kwh_meters.hasBiayaAdmin');
+
+            if ($request->keyword == null || $request->keyword == "null") {
+                $query =  Prabayar::with('kwh_meters', 'kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif', 'kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya', 'kwh_meters.hasBiayaAdmin');
             } else {
-                $query = Prabayar::search($request->keyword)->with('kwh_meters','kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif','kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya','kwh_meters.hasBiayaAdmin');
+                $query = Prabayar::search($request->keyword)->with('kwh_meters', 'kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif', 'kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya', 'kwh_meters.hasBiayaAdmin');
             }
 
-            return $query->whereMonth('created_at', $request->month)->whereYear('created_at', $request->year)->orderByDesc('created_at') ->paginate(10);
-            
+            return $query->whereMonth('created_at', $request->month)->whereYear('created_at', $request->year)->orderByDesc('created_at')->paginate(10);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -61,12 +55,12 @@ class PrabayarController extends Controller
             'unique' => ':Attribute sudah pernah dibuat',
             'required' => ':Attribute tidak boleh kosong',
         ];
-        
-        $this->validate($request,$validate, $messages);
+
+        $this->validate($request, $validate, $messages);
 
         try {
             DB::transaction(
-                function() use ($request) {
+                function () use ($request) {
                     $kwh = new Prabayar();
                     $kwh->id_no_kwh_meter = $request->id_no_kwh_meter;
                     $kwh->nominal_pembelian_token = $request->nominal_pembelian_token;
@@ -76,33 +70,11 @@ class PrabayarController extends Controller
                 }
             );
             return response()->json(['message' => "Prabayar Berhasil Ditambahkan"], 201);
-
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()],400);
+            return response()->json(['message' => $e->getMessage()], 400);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Prabayar  $prabayar
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Prabayar $prabayar)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Prabayar  $prabayar
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Prabayar $prabayar)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -113,21 +85,19 @@ class PrabayarController extends Controller
      */
     public function update(Request $request, Prabayar $prabayar)
     {
-        //
-
         $validate = [
             'id_no_kwh_meter' => 'required',
             'nominal_pembelian_token' => 'required',
-            'token' => 'required|unique:prabayars,token,'.$prabayar->id,
+            'token' => 'required|unique:prabayars,token,' . $prabayar->id,
         ];
-     
+
         $messages = [
             'unique' => ':Attribute sudah pernah dibuat',
             'required' => ':Attribute tidak boleh kosong',
         ];
-        
-        $this->validate($request,$validate, $messages);
-        
+
+        $this->validate($request, $validate, $messages);
+
         try {
             $prabayar->id_no_kwh_meter = $request->id_no_kwh_meter;
             $prabayar->nominal_pembelian_token = $request->nominal_pembelian_token;
@@ -135,11 +105,11 @@ class PrabayarController extends Controller
             $prabayar->keterangan = $request->keterangan;
             $prabayar->update();
             return response()->json(['message' => "Prabayar Berhasil Diperbaharui"], 200);
-
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()],400);
+            return response()->json(['message' => $e->getMessage()], 400);
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -154,8 +124,7 @@ class PrabayarController extends Controller
             $prabayar->delete();
             return response()->json(['message' => "Prabayar Berhasil Dihapus"], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()],400);
-
+            return response()->json(['message' => $e->getMessage()], 400);
         }
     }
 
@@ -165,7 +134,35 @@ class PrabayarController extends Controller
         try {
             return Prabayar::search($request->keyword)->paginate(10);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()],400);
+            return response()->json(['message' => $e->getMessage()], 400);
         }
+    }
+
+
+    /**
+     * Import data excel 
+     *
+     */
+    public function import(Request $request)
+    {
+        try {
+            $file = $request->file('file');
+            Excel::import(new ImportPrabayar, $file, \Maatwebsite\Excel\Excel::XLSX);
+            return response()->json(['message' => "Success Upload data prabayar"], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+
+    /**
+     * Export data excel 
+     *
+     */
+    public function export(Request $request)
+    {
+        $month = $request->month == null ? Carbon::now()->month : $request->month;
+        $year = $request->year == null ? Carbon::now()->year : $request->year;
+        return Excel::download(new ExportPrabayar($request, $year, $month),  $year . '-' . $month . '.xlsx');
     }
 }

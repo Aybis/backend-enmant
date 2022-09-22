@@ -12,7 +12,14 @@ class Prabayar extends Model
     use HasFactory;
     use SoftDeletes;
     use Searchable;
-    
+
+    protected $fillable = [
+        'id_no_kwh_meter',
+        'nominal_pembelian_token',
+        'token',
+        'keteranhgan'
+    ];
+
     protected $searchable = [
         'id_no_kwh_meter',
         'nominal_pembelian_token',
@@ -21,15 +28,15 @@ class Prabayar extends Model
         'kwh_meters.no_pelanggan',
         'kwh_meters.no_kwh_meter',
         'pelanggan.nama_pelanggan',
-        'witel.nama', 
-        'pic.nama_pic', 
-        'daya.daya', 
-        'tarif.tarif', 
+        'witel.nama',
+        'pic.nama_pic',
+        'daya.daya',
+        'tarif.tarif',
     ];
-    
+
     public function kwh_meters()
     {
-        return $this->belongsTo(KwhMeter::class, 'id_no_kwh_meter','id');
+        return $this->belongsTo(KwhMeter::class, 'id_no_kwh_meter', 'id');
     }
 
     public function witel()
@@ -54,7 +61,7 @@ class Prabayar extends Model
     {
         return $this->hasOneThrough((BiayaAdmin::class), (KwhMeter::class), 'id', 'id', 'id_no_kwh_meter', 'id_biaya_admin');
     }
-    
+
     public function daya()
     {
         return $this->hasOneThrough((Daya::class), (KwhMeter::class), 'id', 'id', 'id_no_kwh_meter', 'id_daya');
