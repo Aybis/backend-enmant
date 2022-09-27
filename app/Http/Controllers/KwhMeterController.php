@@ -18,15 +18,15 @@ class KwhMeterController extends Controller
     {
         try {
             if ($request->search == 'dropdown') {
-                return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasPic', 'hasDaya', 'hasBiayaAdmin')->get();
+                return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasDaya')->get();
             } else if ($request->search === 'prabayar') {
-                return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasPic', 'hasDaya', 'hasBiayaAdmin')->where('is_prabayar', 1)->get();
+                return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasDaya')->where('is_prabayar', 1)->get();
             } else if ($request->search === 'pascabayar') {
-                return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasPic', 'hasDaya', 'hasBiayaAdmin')->where('is_prabayar', 0)->get();
+                return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasDaya')->where('is_prabayar', 0)->get();
             } else if ($request->keyword == null || $request->keyword == '') {
-                return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasPic', 'hasDaya', 'hasBiayaAdmin')->paginate(10);
+                return KwhMeter::with('hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasDaya')->paginate(10);
             } else {
-                return KwhMeter::search($request->keyword)->with('hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasPic', 'hasDaya', 'hasBiayaAdmin')->paginate(10);
+                return KwhMeter::search($request->keyword)->with('hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasDaya')->paginate(10);
             }
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
@@ -78,14 +78,14 @@ class KwhMeterController extends Controller
                     $kwh->id_tarif = $request->id_tarif;
                     $kwh->id_witel = $request->id_witel;
                     $kwh->id_daya = $request->id_daya;
-                    $kwh->id_pic = $request->id_pic;
-                    $kwh->id_biaya_admin = $request->id_biaya_admin;
                     $kwh->is_prabayar = $request->is_prabayar;
+                    $kwh->bongkar_rampung = $request->bongkar_rampung;
+                    $kwh->pasang_baru = $request->pasang_baru;
                     $kwh->is_active = 1;
                     $kwh->save();
                 }
             );
-            return response()->json(['message' => "KWH Meter Berhasil Ditambahkan"], 201);
+            return response()->json(['message' => "ID Pelanggan/No. KWH Meter Berhasil Ditambahkan"], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
@@ -144,14 +144,12 @@ class KwhMeterController extends Controller
             $meteran->id_tarif = $request->id_tarif;
             $meteran->id_witel = $request->id_witel;
             $meteran->id_daya = $request->id_daya;
-            $meteran->id_pic = $request->id_pic;
-            $meteran->id_biaya_admin = $request->id_biaya_admin;
             $meteran->is_prabayar = $request->is_prabayar;
             $meteran->bongkar_rampung = $request->bongkar_rampung;
             $meteran->pasang_baru = $request->pasang_baru;
 
             $meteran->update();
-            return response()->json(['message' => "KWH Meter Berhasil Diperbaharui"], 200);
+            return response()->json(['message' => "ID Pelanggan/No. KWH Meter Berhasil Diperbaharui"], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }

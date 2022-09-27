@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Support\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class KwhMeter extends Model
 {
     use HasFactory;
     use Searchable;
+    use SoftDeletes;
 
     protected $primaryKey = 'id';
     protected $table = 'kwh_meters';
@@ -20,25 +22,18 @@ class KwhMeter extends Model
         'pelanggan.nama_pelanggan',
         'hasTarif.tarif',
         'hasDaya.daya',
-        'hasBiayaAdmin.biaya',
-        'hasPic.nama_pic',
         'hasWitel.nama'
     ];
 
 
     public function hasWitel()
     {
-        return $this->belongsTo(Witel::class, 'id');
+        return $this->belongsTo(Witel::class, 'id_witel', 'id');
     }
 
     public function pelanggan()
     {
         return $this->belongsTo(Pelanggan::class, 'id_tbl_pelanggan', 'id');
-    }
-
-    public function hasPic()
-    {
-        return $this->belongsTo(PIC::class, 'id_pic', 'id');
     }
 
     public function hasTarif()
@@ -51,11 +46,6 @@ class KwhMeter extends Model
         return $this->belongsTo(Daya::class, 'id_daya', 'id');
     }
 
-    public function hasBiayaAdmin()
-    {
-        return $this->belongsTo(BiayaAdmin::class, 'id_biaya_admin', 'id');
-    }
-
     public function hasPrabayar()
     {
         return $this->hasMany(Prabayar::class, 'id_no_kwh_meter', 'id');
@@ -64,5 +54,10 @@ class KwhMeter extends Model
     public function hasPascabayar()
     {
         return $this->hasMany(Pascabayar::class, 'id_no_kwh_meter', 'id');
+    }
+
+    public function denda()
+    {
+        return $this->hasMany(Denda::class, 'id_no_kwh_meter', 'id');
     }
 }

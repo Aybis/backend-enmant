@@ -22,9 +22,9 @@ class PrabayarController extends Controller
         try {
 
             if ($request->keyword == null || $request->keyword == "null") {
-                $query =  Prabayar::with('kwh_meters', 'kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif', 'kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya', 'kwh_meters.hasBiayaAdmin');
+                $query =  Prabayar::with('kwh_meters', 'witel', 'witel.regional', 'kwh_meters.hasTarif', 'pelanggan', 'pic', 'kwh_meters.hasDaya', 'biaya_admin');
             } else {
-                $query = Prabayar::search($request->keyword)->with('kwh_meters', 'kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif', 'kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya', 'kwh_meters.hasBiayaAdmin');
+                $query = Prabayar::search($request->keyword)->with('kwh_meters', 'witel', 'witel.regional', 'kwh_meters.hasTarif', 'pelanggan', 'pic', 'kwh_meters.hasDaya', 'biaya_admin');
             }
 
             return $query->whereMonth('created_at', $request->month)->whereYear('created_at', $request->year)->orderByDesc('created_at')->paginate(10);
@@ -66,7 +66,8 @@ class PrabayarController extends Controller
                     $kwh->nominal_pembelian_token = $request->nominal_pembelian_token;
                     $kwh->token = $request->token;
                     $kwh->keterangan = $request->keterangan;
-                    $kwh->biaya_admin = $request->biaya_admin;
+                    $kwh->id_biaya_admin = $request->id_biaya_admin;
+                    $kwh->id_pic = $request->id_pic;
                     $kwh->save();
                 }
             );
@@ -104,7 +105,8 @@ class PrabayarController extends Controller
             $prabayar->nominal_pembelian_token = $request->nominal_pembelian_token;
             $prabayar->token = $request->token;
             $prabayar->keterangan = $request->keterangan;
-            $prabayar->biaya_admin = $request->biaya_admin;
+            $prabayar->id_biaya_admin = $request->id_biaya_admin;
+            $prabayar->id_pic = $request->id_pic;
             $prabayar->update();
             return response()->json(['message' => "Prabayar Berhasil Diperbaharui"], 200);
         } catch (\Exception $e) {

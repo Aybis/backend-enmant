@@ -23,9 +23,9 @@ class PascabayarController extends Controller
 
         try {
             if ($request->keyword == null || $request->keyword == "null") {
-                $query = Pascabayar::with('kwh_meters', 'kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif', 'kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya', 'kwh_meters.hasBiayaAdmin');
+                $query = Pascabayar::with('kwh_meters', 'pelanggan', 'witel.regional', 'kwh_meters.hasTarif', 'kwh_meters.hasDaya', 'biaya_admin', 'pic');
             } else {
-                $query = Pascabayar::search($request->keyword)->with('kwh_meters', 'kwh_meters.hasWitel', 'kwh_meters.hasWitel.regional', 'kwh_meters.hasTarif', 'kwh_meters.pelanggan', 'kwh_meters.hasPic', 'kwh_meters.hasDaya', 'kwh_meters.hasBiayaAdmin');
+                $query = Pascabayar::search($request->keyword)->with('kwh_meters', 'pelanggan', 'witel.regional', 'kwh_meters.hasTarif', 'kwh_meters.hasDaya', 'biaya_admin', 'pic');
             }
 
             return $query->whereMonth('created_at', $request->month)->whereYear('created_at', $request->year)->orderByDesc('created_at')->paginate(10);
@@ -66,11 +66,17 @@ class PascabayarController extends Controller
                     $pascabayar->meter_akhir = $request->meter_akhir;
                     $pascabayar->selisih = $request->selisih;
                     $pascabayar->tagihan = $request->tagihan;
-                    $pascabayar->biaya_admin = $request->biaya_admin;
+                    $pascabayar->id_biaya_admin = $request->id_biaya_admin;
+                    $pascabayar->id_pic = $request->id_pic;
+                    $pascabayar->denda = $request->denda;
+                    $pascabayar->reference_denda = $request->reference_denda;
+                    $pascabayar->status = $request->status;
+                    $pascabayar->tanggal_transaksi = $request->tanggal_transaksi;
+
                     $pascabayar->save();
                 }
             );
-            return response()->json(['message' => "Pascabayar Berhasil Ditambahkan"], 201);
+            return response()->json(['message' => "Layanan Pascabayar Berhasil Ditambahkan"], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
@@ -106,9 +112,15 @@ class PascabayarController extends Controller
             $pascabayar->meter_akhir = $request->meter_akhir;
             $pascabayar->selisih = $request->selisih;
             $pascabayar->tagihan = $request->tagihan;
-            $pascabayar->biaya_admin = $request->biaya_admin;
+            $pascabayar->id_biaya_admin = $request->id_biaya_admin;
+            $pascabayar->id_pic = $request->id_pic;
+            $pascabayar->denda = $request->denda;
+            $pascabayar->reference_denda = $request->reference_denda;
+            $pascabayar->status = $request->status;
+            $pascabayar->tanggal_transaksi = $request->tanggal_transaksi;
+
             $pascabayar->update();
-            return response()->json(['message' => "Pascabayar Berhasil Diperbaharui"], 201);
+            return response()->json(['message' => "Layanan Pascabayar Berhasil Diperbaharui"], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }

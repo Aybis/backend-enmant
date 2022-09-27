@@ -14,8 +14,13 @@ class PIC extends Model
     protected $table = 'pics';
     protected $guarded = [];
 
-    public function hasKwhMeter()
+    public function prabayars()
     {
-        return $this->hasMany(KwhMeter::class, 'id_pic');
+        return $this->hasMany(Prabayar::class, 'id_pic', 'id');
+    }
+
+    public function pascabayars()
+    {
+        return $this->hasMany(Pascabayar::class, 'id_pic', 'id');
     }
 }

@@ -13,23 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('prabayars', function (Blueprint $table) {
+        Schema::create('dendas', function (Blueprint $table) {
             $table->id();
-
             // Relation
             $table->unsignedBigInteger('id_no_kwh_meter');
             $table->foreign('id_no_kwh_meter')->references('id')->on('kwh_meters')->onDelete('cascade');
-            $table->unsignedBigInteger('id_pic')->nullable();
-            $table->foreign('id_pic')->references('id')->on('pics')->onDelete('cascade');
-            $table->unsignedBigInteger('id_biaya_admin')->nullable();
-            $table->foreign('id_biaya_admin')->references('id')->on('biaya_admins')->onDelete('cascade');
-
             // Column
-            $table->bigInteger('nominal_pembelian_token');
-            $table->string('token');
-            $table->text('keterangan')->nullable();
+            $table->string('no_reference')->unique()->nullable();
+            $table->bigInteger('nominal')->nullable();
+            $table->date('tanggal')->nullable();
+            $table->string('keterangan')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -40,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prabayars');
+        Schema::dropIfExists('dendas');
     }
 };

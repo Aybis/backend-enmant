@@ -32,6 +32,7 @@ class Prabayar extends Model
         'pic.nama_pic',
         'daya.daya',
         'tarif.tarif',
+        'witel.regional.nama',
     ];
 
     public function kwh_meters()
@@ -54,12 +55,12 @@ class Prabayar extends Model
     }
     public function pic()
     {
-        return $this->hasOneThrough((PIC::class), (KwhMeter::class), 'id', 'id', 'id_no_kwh_meter', 'id_pic');
+        return $this->belongsTo(Pic::class, 'id_pic', 'id');
     }
 
     public function biaya_admin()
     {
-        return $this->hasOneThrough((BiayaAdmin::class), (KwhMeter::class), 'id', 'id', 'id_no_kwh_meter', 'id_biaya_admin');
+        return $this->belongsTo(BiayaAdmin::class, 'id_biaya_admin', 'id');
     }
 
     public function daya()
