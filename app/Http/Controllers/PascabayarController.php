@@ -24,6 +24,8 @@ class PascabayarController extends Controller
         try {
             if ($request->keyword == null || $request->keyword == "null") {
                 $query = Pascabayar::with('kwh_meters', 'pelanggan', 'witel.regional', 'kwh_meters.hasTarif', 'kwh_meters.hasDaya', 'biaya_admin', 'pic');
+            } else if ($request->meteran !== null) {
+                $query = Pascabayar::with('kwh_meters', 'pelanggan', 'witel.regional', 'kwh_meters.hasTarif', 'kwh_meters.hasDaya', 'biaya_admin', 'pic')->where('id_no_kwh_meter', $request->meteran);
             } else {
                 $query = Pascabayar::search($request->keyword)->with('kwh_meters', 'pelanggan', 'witel.regional', 'kwh_meters.hasTarif', 'kwh_meters.hasDaya', 'biaya_admin', 'pic');
             }
