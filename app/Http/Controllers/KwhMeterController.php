@@ -99,7 +99,7 @@ class KwhMeterController extends Controller
      */
     public function show(KwhMeter $meteran)
     {
-        $result = $meteran::with((['hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasPic', 'hasDaya', 'hasBiayaAdmin']))->find($meteran->id);
+        $result = $meteran::with((['hasWitel', 'hasWitel.regional', 'hasTarif', 'pelanggan', 'hasDaya', 'hasPrabayar', 'hasPascabayar', 'hasPascabayar.pic',  'hasPascabayar.biaya_admin', 'hasPrabayar.pic', 'hasPrabayar.biaya_admin']))->find($meteran->id);
         return response()->json($result, 200);
     }
 

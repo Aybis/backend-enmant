@@ -68,8 +68,6 @@ class PascabayarController extends Controller
                     $pascabayar->tagihan = $request->tagihan;
                     $pascabayar->id_biaya_admin = $request->id_biaya_admin;
                     $pascabayar->id_pic = $request->id_pic;
-                    $pascabayar->denda = $request->denda;
-                    $pascabayar->reference_denda = $request->reference_denda;
                     $pascabayar->status = $request->status;
                     $pascabayar->tanggal_transaksi = $request->tanggal_transaksi;
 
@@ -114,8 +112,6 @@ class PascabayarController extends Controller
             $pascabayar->tagihan = $request->tagihan;
             $pascabayar->id_biaya_admin = $request->id_biaya_admin;
             $pascabayar->id_pic = $request->id_pic;
-            $pascabayar->denda = $request->denda;
-            $pascabayar->reference_denda = $request->reference_denda;
             $pascabayar->status = $request->status;
             $pascabayar->tanggal_transaksi = $request->tanggal_transaksi;
 

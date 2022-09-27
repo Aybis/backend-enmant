@@ -44,7 +44,7 @@ class Pascabayar extends Model
 
     public function witel()
     {
-        return $this->hasOneThrough((Witel::class), (KwhMeter::class), 'id', 'id', 'id_no_kwh_meter', 'id');
+        return $this->hasOneThrough((Witel::class), (KwhMeter::class), 'id', 'id', 'id_no_kwh_meter', 'id_witel');
     }
 
     public function pelanggan()
