@@ -25,8 +25,8 @@ class ExportPascabayar implements FromCollection, WithHeadings, WithMapping
     {
 
         $prabayar = Pascabayar::with(['kwh_meters' => function ($kwh) {
-            $kwh->with(['hasTarif', 'hasDaya', 'hasBiayaAdmin', 'hasPic', 'pelanggan']);
-        }, 'witel.regional'])->whereYear('created_at', $this->year);
+            $kwh->with(['hasTarif', 'hasDaya', 'pelanggan']);
+        }, 'witel.regional', 'pic', 'biaya_admin'])->whereYear('created_at', $this->year);
 
         if ($this->month != 13)
             $prabayar->whereMonth('created_at', $this->month);
@@ -48,6 +48,7 @@ class ExportPascabayar implements FromCollection, WithHeadings, WithMapping
             'SELISIH METER',
             'TAGIHAN',
             'ADMIN',
+            'PIC',
         ];
     }
 
@@ -64,7 +65,8 @@ class ExportPascabayar implements FromCollection, WithHeadings, WithMapping
             $row->meter_akhir,
             $row->selisih,
             $row->tagihan,
-            number_format($row->kwh_meters->hasBiayaAdmin->biaya),
+            number_format($row->biaya_admin->biaya),
+            $row->pic->nama_pic,
         ];
     }
 }
