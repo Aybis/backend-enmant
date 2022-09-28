@@ -23,6 +23,8 @@ class PrabayarController extends Controller
 
             if ($request->keyword == null || $request->keyword == "null") {
                 $query =  Prabayar::with('kwh_meters', 'witel', 'witel.regional', 'kwh_meters.hasTarif', 'pelanggan', 'pic', 'kwh_meters.hasDaya', 'biaya_admin');
+            } else if ($request->meteran != null) {
+                $query =  Prabayar::with('kwh_meters', 'witel', 'witel.regional', 'kwh_meters.hasTarif', 'pelanggan', 'pic', 'kwh_meters.hasDaya', 'biaya_admin')->where('id_no_kwh_meter', $request->meteran);
             } else {
                 $query = Prabayar::search($request->keyword)->with('kwh_meters', 'witel', 'witel.regional', 'kwh_meters.hasTarif', 'pelanggan', 'pic', 'kwh_meters.hasDaya', 'biaya_admin');
             }
