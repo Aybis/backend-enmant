@@ -59,7 +59,7 @@ class Pascabayar extends Model
     }
     public function pic()
     {
-        return $this->belongsTo(Pic::class, 'id_pic', 'id');
+        return $this->belongsTo(PIC::class, 'id_pic', 'id');
     }
 
     public function biaya_admin()
