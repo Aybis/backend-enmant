@@ -15,6 +15,8 @@ class Pascabayar extends Model
 
     protected $fillable = [
         'id_no_kwh_meter',
+        'id_pic',
+        'id_biaya_admin',
         'meter_awal',
         'meter_akhir',
         'selisih',
