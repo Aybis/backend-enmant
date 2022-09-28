@@ -16,9 +16,12 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call(RegionalSeeder::class);
+        $this->call(WitelSeeder::class);
+        $this->call(PICSeeder::class);
+        $this->call(BiayaAdminSeeder::class);
+        $this->call(DayaSeeder::class);
+        $this->call(TarifSeeder::class);
+        $this->call(PelangganSeeder::class);
     }
 }

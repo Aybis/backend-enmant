@@ -15,6 +15,8 @@ class Prabayar extends Model
 
     protected $fillable = [
         'id_no_kwh_meter',
+        'id_pic',
+        'id_biaya_admin',
         'nominal_pembelian_token',
         'token',
         'keteranhgan'
