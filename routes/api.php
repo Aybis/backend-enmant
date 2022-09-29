@@ -12,6 +12,7 @@ use App\Http\Controllers\PrabayarController;
 use App\Http\Controllers\RegionalController;
 use App\Http\Controllers\TarifController;
 use App\Http\Controllers\WitelController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,14 @@ use App\Http\Controllers\WitelController;
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 // });
+
+Route::group([
+    'prefix' => 'dashboard',
+], function () {
+    Route::GET('all-kwh', [DashboardController::class, 'getAllKwhMeter']);
+    Route::GET('monthly-kwh', [DashboardController::class, 'getKwhMonthly']);
+    Route::GET('kwh-by-regional', [DashboardController::class, 'getKwhByRegional']);
+});
 
 Route::group([
     'prefix' => 'prabayar',

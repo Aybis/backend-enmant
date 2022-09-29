@@ -23,6 +23,4 @@ class Witel extends Model
     {
         return $this->hasMany(KwhMeter::class, 'id_witel');
     }
-    
-
 }
