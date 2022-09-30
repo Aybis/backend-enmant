@@ -40,7 +40,7 @@ class DashboardController extends Controller
     {
         $regionals = Regional::with(['witel' => function ($witel) {
             $witel->with(['kwh_meter' => function ($kwh) {
-                $kwh->with(['hasPrabayar', 'hasPascabayar']);
+                $kwh->with(['hasPrabayar', 'hasPascabayar', 'pelanggan']);
             }]);
         }])->get();
         $data = [];
@@ -51,6 +51,7 @@ class DashboardController extends Controller
             $count_pas = 0;
             $nominal_pra = 0;
             $nominal_pas = 0;
+            $pelanngan = [];
 
             foreach ($regional->witel as $witel) {
                 $jumlah_kwh += count($witel->kwh_meter);
@@ -60,11 +61,15 @@ class DashboardController extends Controller
                 $count_pra += $transaksi[2];
                 $nominal_pas += $transaksi[1];
                 $count_pas += $transaksi[0];
+                foreach ($witel->kwh_meter as $kwh) {
+                    array_push($pelanngan, $kwh->pelanggan->id);
+                }
             }
 
             array_push($data, [
                 "nama" => $regional->nama,
                 "jumlah_kwh" => $jumlah_kwh,
+                "pelanggan" => count(array_unique($pelanngan)),
                 "prabayar" => [
                     "nominal" => $nominal_pra,
                     "jumlah" => $count_pra,
@@ -75,6 +80,7 @@ class DashboardController extends Controller
                 ],
             ]);
         }
+
         return response()->json($data, 200);
     }
 
