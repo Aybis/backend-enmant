@@ -9,12 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Denda extends Model
 {
     use HasFactory;
-    use SoftDeletes;
-
 
     protected $primaryKey = 'id';
     protected $table = 'dendas';
-
 
     public function kwh_meters()
     {
