@@ -26,6 +26,8 @@ return new class extends Migration
 
             // Column
             $table->bigInteger('nominal_pembelian_token');
+            $table->double('nilai_kwh');
+            $table->string('file');
             $table->string('token');
             $table->text('keterangan')->nullable();
             $table->timestamps();

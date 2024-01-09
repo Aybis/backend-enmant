@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Prabayar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportPrabayar;
 use App\Exports\ExportPrabayar;
@@ -49,8 +50,7 @@ class PrabayarController extends Controller
             'nominal_pembelian_token' => 'required',
             'token' => 'required|unique:prabayars',
             'keterangan' => 'required',
-
-
+            'nilai_kwh' => 'required'
         ];
 
         $messages = [
@@ -67,6 +67,7 @@ class PrabayarController extends Controller
                     $kwh->id_no_kwh_meter = $request->id_no_kwh_meter;
                     $kwh->nominal_pembelian_token = $request->nominal_pembelian_token;
                     $kwh->token = $request->token;
+                    $kwh->nilai_kwh = $request->nilai_kwh;
                     $kwh->keterangan = $request->keterangan;
                     $kwh->id_biaya_admin = $request->id_biaya_admin;
                     $kwh->id_pic = $request->id_pic;
@@ -93,6 +94,7 @@ class PrabayarController extends Controller
             'id_no_kwh_meter' => 'required',
             'nominal_pembelian_token' => 'required',
             'token' => 'required|unique:prabayars,token,' . $prabayar->id,
+            'nilai_kwh' => 'required'
         ];
 
         $messages = [
@@ -106,6 +108,7 @@ class PrabayarController extends Controller
             $prabayar->id_no_kwh_meter = $request->id_no_kwh_meter;
             $prabayar->nominal_pembelian_token = $request->nominal_pembelian_token;
             $prabayar->token = $request->token;
+            $prabayar->nilai_kwh = $request->nilai_kwh;
             $prabayar->keterangan = $request->keterangan;
             $prabayar->id_biaya_admin = $request->id_biaya_admin;
             $prabayar->id_pic = $request->id_pic;
